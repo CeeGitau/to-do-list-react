@@ -7,6 +7,8 @@ uuidv4();
 
 export const TodoWrapper = () => {
     const [todos, setTodos] = useState([]);
+    const [filter, setFilter] = useState("all");
+    const [sort, setSort] = useState("none");
 
     const addTodo = ({ task, dueDate, priority }) => {
         setTodos([...todos, { id: uuidv4(), task, dueDate, priority, completed: false, isEditing: false }]);
@@ -29,11 +31,38 @@ export const TodoWrapper = () => {
         setTodos(todos.map(todo => todo.id === id ? { ...todo, ...task, isEditing: !todo.isEditing } : todo));
     };
 
+    const filteredTodos = todos.filter(todo => {
+        if (filter === "completed") return todo.completed;
+        if (filter === "incomplete") return !todo.completed;
+        return true;
+    });
+
+    const sortedTodos = [...filteredTodos].sort((a, b) => {
+        if (sort === "dueDate") return new Date(a.dueDate) - new Date(b.dueDate);
+        if (sort === "priority") {
+            const priorities = { high: 1, medium: 2, low: 3};
+            return priorities[a.priority] - priorities[b.priority];
+        } 
+        return 0;
+    });
+
     return (
         <div className="TodoWrapper">
             <h1>Get Things Done!</h1>
             <TodoForm addTodo={addTodo} />
-            {todos.map((todo, index) => (
+            <div className="filters">
+                <button onClick={() => setFilter("all")}>All</button>
+                <button onClick={() => setFilter("completed")}>Completed</button>
+                <button onClick={() => setFilter("incomplete")}>Incomplete</button>
+
+                <select onChange={(e) => setSort(e.target.value)}>
+                    <option value="none">Sort By</option>
+                    <option value="dueDate">Due Date</option>
+                    <option value="priority">Priority</option>
+                </select>
+            </div>
+
+            {sortedTodos.map((todo, index) => (
                 todo.isEditing ? (
                     <EditTodoForm editTodo={editTask} task={todo} key={index} />
                 ) : (
