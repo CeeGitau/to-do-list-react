@@ -51,6 +51,25 @@ h1 {
   color: #ffffff4d;
 }
 
+.todo-date-input {
+  outline: none;
+  background: none;
+  border: 1px solid #8758ff;
+  padding: 0.5rem 1rem;
+  margin-bottom: 2rem;
+  width: 300px;
+  color: #fff;
+}
+
+.todo-priority-input {
+  outline: none;
+  background: none;
+  border: 1px solid #8758ff;
+  padding: 0.5rem 1rem;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
 .todo-btn {
   background: #8758ff;
   color: #fff;
@@ -68,6 +87,34 @@ h1 {
   padding: 0.75rem 1rem;
   border-radius: 5px;
   margin-bottom: 1rem;
+}
+
+.todo-due-date,
+.todo-priority {
+  color: #ffffffb3;
+  font-size: 0.9rem;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.filters button,
+.filters select {
+  background: #1A1A40;
+  color: #fff;
+  border: 1px solid #8758ff;
+  margin: 0 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.filters button:hover,
+.filters select:hover {
+  background: #8758ff;
 }
 
 .fa-trash {
@@ -89,4 +136,3 @@ h1 {
 .delete-icon {
   cursor: pointer;
 }
- 
