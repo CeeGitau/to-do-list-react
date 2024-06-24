@@ -11,41 +11,61 @@ export const TodoWrapper = () => {
 
     useEffect(() => {
         const fetchTodos = async () => {
-            const res = await axios.get('http://localhost:5000/todos');
-            setTodos(res.data);
+            try {
+                const res = await axios.get('/todos');
+                setTodos(res.data);
+            } catch (error) {
+                console.error('Error fetching todos:', error);
+            }
         };
         fetchTodos();
     }, []);
 
     const addTodo = async ({ task, dueDate, priority }) => {
-        const res = await axios.post('http://localhost:5000/todos', {
-            task,
-            dueDate,
-            priority,
-            completed: false,
-            isEditing: false
-        });
-        setTodos([...todos, res.data]);
+        try {
+            const res = await axios.post('/todos', {
+                task,
+                dueDate,
+                priority,
+                completed: false,
+                isEditing: false
+            });
+            setTodos([...todos, res.data]);
+        } catch (error) {
+            console.error('Error adding todo:', error);
+        }
     };
 
-    const toggleComplete = async id => {
-        const todo = todos.find(todo => todo.id === id);
-        const res = await axios.put(`http://localhost:5000/todos/${id}`, { ...todo, completed: !todo.completed });
-        setTodos(todos.map(todo => todo.id === id ? res.data : todo));
+    const toggleComplete = async _id => {
+        try {
+            const todo = todos.find(todo => todo._id === _id);
+            const res = await axios.put(`/todos/${_id}`, { ...todo, completed: !todo.completed });
+            setTodos(todos.map(todo => todo._id === _id ? res.data : todo));
+        } catch (error) {
+            console.error('Error toggling complete:', error);
+        }
     };
 
-    const deleteTodo = async id => {
-        await axios.delete(`http://localhost:5000/todos/${id}`);
-        setTodos(todos.filter(todo => todo.id !== id));
+    const deleteTodo = async _id => {
+        try {
+            await axios.delete(`/todos/${_id}`);
+            setTodos(todos.filter(todo => todo._id !== _id));
+        } catch (error) {
+            console.error('Error deleting todo:', error);
+        }
     };
 
-    const editTodo = id => {
-        setTodos(todos.map(todo => todo.id === id ? { ...todo, isEditing: !todo.isEditing } : todo));
+    const editTodo = _id => {
+        setTodos(todos.map(todo => todo._id === _id ? { ...todo, isEditing: !todo.isEditing } : todo));
     };
 
-    const editTask = async (task, id) => {
-        const res = await axios.put(`http://localhost:5000/todos/${id}`, { ...task, isEditing: false });
-        setTodos(todos.map(todo => todo.id === id ? res.data : todo));
+    const editTask = async (task, _id) => {
+        try {
+            const res = await axios.put(`/todos/${_id}`, { ...task, isEditing: false });
+            setTodos(todos.map(todo => todo._id === _id ? res.data : todo));
+        } catch (error) {
+            console.error('Error editing task:', error);
+        }
     };
 
     const filteredTodos = todos.filter(todo => {
@@ -84,9 +104,9 @@ export const TodoWrapper = () => {
                     <Todo
                         task={todo}
                         key={index}
-                        toggleComplete={toggleComplete}
-                        deleteTodo={deleteTodo}
-                        editTodo={editTodo}
+                        toggleComplete={() => toggleComplete(todo._id)}
+                        deleteTodo={() => deleteTodo(todo._id)}
+                        editTodo={() => editTodo(todo._id)}
                     />
                 )
             ))}
