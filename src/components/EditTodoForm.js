@@ -1,46 +1,43 @@
-import React, {useState} from "react";
+import React, { useState } from 'react';
 
-export const EditTodoForm = ({editTodo, task}) => {
-    const [value, setValue] = useState(task.task);
-    const [dueDate, setDueDate] = useState(task.dueDate);
-    const [priority, setPriority] = useState(task.priority);
+export const EditTodoForm = ({ editTodo, task }) => {
+    const [newTask, setNewTask] = useState(task.task);
+    const [newDueDate, setNewDueDate] = useState(task.dueDate);
+    const [newPriority, setNewPriority] = useState(task.priority);
 
     const handleSubmit = e => {
         e.preventDefault();
-
-        editTodo({ task: value, dueDate, priority }, task.id);
-
-        //clears the input after submission
-        setValue("");
-        setDueDate("");
-        setPriority("medium");
+        editTodo({
+            task: newTask,
+            dueDate: newDueDate,
+            priority: newPriority
+        }, task._id);
     };
 
     return (
-        <form className="TodoForm" onSubmit={handleSubmit}>
-            <input
-                type="text"
+        <form onSubmit={handleSubmit} className="EditTodoForm">
+            <input 
+                type="text" 
+                value={newTask} 
+                onChange={(e) => setNewTask(e.target.value)} 
                 className="todo-input"
-                value={value}
-                placeholder="Update task"
-                onChange={(e) => setValue(e.target.value)}
             />
-            <input
-                type="date"
-                className="todo-date-input"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
+            <input 
+                type="date" 
+                value={newDueDate} 
+                onChange={(e) => setNewDueDate(e.target.value)} 
+                className="todo-input"
             />
-            <select
-                className="todo-priority-input"
-                value={priority}
-                onChange={(e) => setPriority(e.target.value)}
+            <select 
+                value={newPriority} 
+                onChange={(e) => setNewPriority(e.target.value)} 
+                className="todo-input"
             >
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
                 <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
             </select>
-            <button type="submit" className="todo-btn">Update Task</button>
+            <button type="submit" className="todo-btn">Update</button>
         </form>
     );
 };
