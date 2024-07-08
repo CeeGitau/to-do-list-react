@@ -16,6 +16,15 @@ export const TodoForm = ({addTodo}) => {
         setPriority("medium"); 
     }
 
+    //Get current date
+    const getCurrentDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     return (
         <form className="TodoForm" onSubmit={handleSubmit}>
             <input 
@@ -31,6 +40,7 @@ export const TodoForm = ({addTodo}) => {
                 className="todo-date-input"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
+                min={getCurrentDate()} //Set the minimum date to today
             />
 
             <select 
