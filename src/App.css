@@ -63,7 +63,7 @@ h1 {
 
 .todo-priority-input {
   outline: none;
-  background: none;
+  background: #1A1A40;
   border: 1px solid #8758ff;
   padding: 0.5rem 1rem;
   margin-bottom: 2rem;
